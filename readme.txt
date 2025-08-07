@@ -25,10 +25,12 @@ Usage for unauthorized or illegal activities is **prohibited**.
 
 Note: All data contained in the screenshots are fictitious.
 
-1. https://i.imgur.com/cAJgoo4.png
-2. https://i.imgur.com/eJzHG8g.png
-3. https://i.imgur.com/I1U09oh.png
-4. https://i.imgur.com/wTGABLj.png
+1. https://i.imgur.com/ndvXCKP.png - Applications Running
+2. https://i.imgur.com/cAJgoo4.png - Command Center
+3. https://i.imgur.com/eJzHG8g.png - Report Center
+4. https://i.imgur.com/I1U09oh.png - Agent Network
+5. https://i.imgur.com/wTGABLj.png - Agent Auth Key Generator
+6. https://i.imgur.com/URT3DMW.png - Combolist Module
 
 -------------------------------------------------------------------------------------------
                                      Prerequisites                                        

@@ -1,140 +1,125 @@
-"use client";
+"use client"
 
-import { Navbar } from "@/components/layout/navbar";
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MotionLink } from "@/components/site/motion-link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Section } from "@/components/site/section";
+import { useState } from "react"
+import { ChevronRight, Monitor, Settings, Shield, Target, Users, Bell, RefreshCw, FileText, LogOut, DatabaseBackup, SearchCode, Search } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import CommandCenterPage from "./../_command-center/page"
+import AgentNetworkPage from "./../_agent-network/page"
+import OperationsPage from "./../_operations/page"
+import ReportPage from "./../_report/page"
+import SystemsPage from "./../_systems/page"
+import { AuthService } from "@/services/auth.service"
+import { Label } from "@radix-ui/react-label"
+import ModulesPage from "../_modules/page"
 
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+export default function SearchXDashboard() {
+  const [activeSection, setActiveSection] = useState("overview")
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
-import {
-  MessageSquare,
-  Globe,
-} from "lucide-react";
-
-type ToolsStatus = {
-  combolistRows: number;
-  discordMessages: number;
-  dataleakRows: number;
-  brazilianResearchRows: number;
-  indianResearchRows: number;
-};
-
-const Dashboard = () => {
-  const [status, setStatus] = useState<ToolsStatus | null>(null);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setStatus({
-        combolistRows: 123456,
-        discordMessages: 789,
-        dataleakRows: 4567,
-        brazilianResearchRows: 3210,
-        indianResearchRows: 987,
-      });
-    }, 800);
-
-    return () => clearTimeout(timeout);
-  }, []);
+  const auth = new AuthService();
 
   return (
-    <Section>
-      <div className="relative min-h-screen bg-background text-white">
-        <Navbar />
-
-        <main className="relative z-10 p-12 max-w-7xl mx-auto min-h-screen">
-          <h1 className="text-2xl font-bold mb-4">
-            Welcome, {sessionStorage.getItem("username") || "Your Not Logged"}!
-          </h1>
-          <p className="text-sm text-gray-400 mb-12 max-w-7xl leading-relaxed">
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <Button variant="link" className="w-20">@SearchX</Button>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80">
-                <div className="flex justify-between gap-4">
-                  <Avatar>
-                    <AvatarImage src="https://i.imgur.com/bMgR3ip.jpeg" />
-                    <AvatarFallback>VC</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <h4 className="text-sm font-semibold">@ffx64</h4>
-                    <p className="text-sm">
-                      SearchX is a powerful platform for indexing and analyzing data extracted from different sources, such as combolists, Discord messages, and other networks.
-                    </p>
-                    <div className="text-muted-foreground text-xs">
-                      Active since November 2024
-                    </div>
-                  </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>{" "}
-            is a modular suite focused on data leak research and correlation. Each module has a specific role within the ecosystem:
-
-            <br />
-            <br />
-
-            <strong className="text-white">Main modules:</strong>
-            <ul className="list-disc list-inside mt-2">
-              <li><span className="text-white">searchx-api:</span> Java-based REST API responsible for providing access to indexed data, user management, dashboards, and public/private endpoints.</li>
-              <li><span className="text-white">searchx-indexer:</span> Go service responsible for receiving real-time data from agents (via gRPC), indexing, checking for duplicates, applying rules, and classifying content.</li>
-              <li><span className="text-white">searchx-migrations:</span> Database versioning module using Flyway. Ensures schema versioning and consistency across environments.</li>
-            </ul>
-
-            <br />
-            <strong className="text-white">How to use:</strong>
-            <ol className="list-decimal list-inside mt-2">
-              <li>Go to the <MotionLink href="/agents" label="/agents" /> page in the navbar.</li>
-              <li>Create a new agent and configure the authentication key.</li>
-              <li>Once the agent starts sending data, the indexer will process it and you’ll be able to view the results in real-time modules.</li>
-              <li>Use the <MotionLink href="/dashboard" label="/dashboard" /> page to monitor data collection and status.</li>
-            </ol>
-
-            <br />
-            <span className="text-red-500 font-semibold">
-              Warning: This tool is for educational purposes only. Any illegal use is entirely the user’s responsibility. Use it ethically.
-            </span>          
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Combolist</CardTitle>
-                <Globe className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {status?.combolistRows?.toLocaleString() ?? "Loading..."}
-                </div>
-                <p className="text-xs text-muted-foreground">rows</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Discord</CardTitle>
-                <MessageSquare className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {status?.discordMessages?.toLocaleString() ?? "Loading..."}
-                </div>
-                <p className="text-xs text-muted-foreground">messages</p>
-              </CardContent>
-            </Card>
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <div
+        className={`${sidebarCollapsed ? "w-16" : "w-70"} bg-muted border-r border-zinc-700/50 transition-all duration-300 fixed md:relative z-50 md:z-auto h-full md:h-auto ${!sidebarCollapsed ? "md:block" : ""}`}
+      >
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-8">
+            <div className={`${sidebarCollapsed ? "hidden" : "block"}`}>
+              <h1 className="text-white font-bold text-lg tracking-wider">SEARCHX OPS</h1>
+              <p className="text-gray-400 text-xs">v1.0.0 CLASSIFIED</p>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="text-muted-foreground hover:text-white hover:bg-background"
+            >
+              <ChevronRight
+                className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${sidebarCollapsed ? "" : "rotate-180"}`}
+              />
+            </Button>
           </div>
 
-        </main>
-      </div>
-    </Section>
-  );
-};
+          <nav className="space-y-3">
+            {[
+              { id: "overview", icon: Monitor, label: "COMMAND CENTER" },
+              { id: "modules", icon: Search, label: "MODULES" },
+              { id: "operations", icon: Target, label: "OPERATIONS" },
+              { id: "report", icon: FileText, label: "REPORT" },
+              { id: "agents", icon: Users, label: "AGENT NETWORK" },
+              { id: "systems", icon: Settings, label: "SYSTEMS" },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveSection(item.id)}
+                className={`w-full flex items-center gap-3 p-3 rounded transition-colors ${
+                  activeSection === item.id ? "bg-background text-white" : "text-muted-foreground hover:text-white hover:bg-background"
+                }`}
+              >
+                <item.icon className="w-5 h-5 md:w-5 md:h-5 sm:w-6 sm:h-6" />
+                {!sidebarCollapsed && <span className="text-sm font-medium">{item.label}</span>}
+              </button>
+            ))}
+          </nav>
 
-export default Dashboard;
+          {!sidebarCollapsed && (
+            <div className="mt-8 p-4 bg-background border rounded">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2 h-2 bg-chart-2 rounded-full animate-pulse"></div>
+                <span className="text-xs text-chart-2 font-medium">SYSTEM ONLINE</span>
+              </div>
+              <div className="text-xs text-muted-foreground">
+                <div>UPTIME: 72:14:33</div>
+                <div>AGENTS: 847 ACTIVE</div>
+                <div>MISSIONS: 23 ONGOING</div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Overlay */}
+      {!sidebarCollapsed && (
+        <div className="fixed inset-0 bg-muted z-40 md:hidden" onClick={() => setSidebarCollapsed(true)} />
+      )}
+
+      {/* Main Content */}
+      <div className={`flex-1 flex flex-col ${!sidebarCollapsed ? "md:ml-0" : ""}`}>
+        {/* Top Toolbar */}
+        <div className="h-16 bg-muted border-b border-zinc-700/50 flex items-center justify-between px-6">
+          <div className="flex items-center gap-4">
+            <div className="text-sm text-muted-foreground">
+              SEARCHX COMMAND / <span className="text-white font-medium">OVERVIEW</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-xs text-muted-foreground">LAST UPDATE: 23/07/2025 21:43 UTC</div>
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-white bg-background border hover:border-muted-foreground">
+              <Bell className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-white bg-background border hover:border-muted-foreground"
+              onClick={() => window.location.reload()} >
+              <RefreshCw className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="icon" className="text-red-500/80 hover:text-red-500 bg-red-500/10 hover:bg-red-500/20 border border-red-500/60 hover:border-red-500"
+              onClick={() => auth.logout()} >
+              <LogOut className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Dashboard Content */}
+        <div className="flex-1 overflow-auto bg-background">
+          {activeSection === "overview" && <CommandCenterPage />}
+          {activeSection === "agents" && <AgentNetworkPage />}
+          {activeSection === "operations" && <OperationsPage />}
+          {activeSection === "modules" && <ModulesPage />}
+          {activeSection === "report" && <ReportPage />}
+          {activeSection === "systems" && <SystemsPage />}
+        </div>
+      </div>
+    </div>
+  )
+}

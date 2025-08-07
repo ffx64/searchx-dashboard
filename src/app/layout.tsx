@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { JetBrains_Mono, Poppins } from 'next/font/google'
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "sonner";
-
+import type React from "react"
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -17,28 +16,17 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-	title: "SearchX"
-};
+  title: "SearchX Operations Dashboard",
+  description: "SearchX command and control system",
+}
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
-	return (
-		<html lang="pt-br" suppressHydrationWarning>
-			<head />
-			<body className={`${poppins.className} ${jetbrainsMono.variable} antialiased`}>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="dark"
-					enableSystem
-					disableTransitionOnChange
-				>
-					{children}
-					<Toaster richColors theme="dark" position="top-center" />
-				</ThemeProvider>
-			</body>
-		</html>
-	);
+export default function RootLayout({ children, }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className="dark">
+      <body className="bg-muted text-white ${jetbrainsMono.variable} ${poppins.className} antialiased">
+        <Toaster richColors theme="dark" position="top-center" />
+        {children}
+        </body>
+    </html>
+  )
 }

@@ -14,12 +14,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import MouseMoveEffect from "@/components/site/mouse-move-effect";
 
-import { LoginService } from "@/services/login.service";
+import { AuthService } from "@/services/auth.service";
 import { sanitize } from "@/lib/utils";
 
-const loginService = new LoginService();
+const auth = new AuthService();
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -65,7 +64,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      await loginService.login({ username, password });
+      await auth.login({ username, password });
       toast.success("Login successful. Welcome aboard.");
     } catch (err: any) {
       if (err?.response?.status === 401) {
@@ -85,22 +84,11 @@ const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-background text-white">
-      <MouseMoveEffect />
-
-      {/* Sexy fancy background */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
-        <div className="absolute right-0 top-0 h-[400px] w-[400px] bg-blue-500/20 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 h-[400px] w-[400px] bg-purple-600/20 blur-[120px] rounded-full" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.015)_1px,transparent_1px)] [background-size:80px_80px] opacity-20" />
-      </div>
+    <div className="relative min-h-screen">
 
       <div className="relative z-10">
-        <Section>
-          <section className="w-full min-h-screen flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 z-0 pointer-events-none bg-grid-pattern bg-grid-size" />
-            <div className="absolute inset-0 z-0 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
+          <div className="w-full min-h-screen flex items-center justify-center relative overflow-hidden">
+            <div className="absolute inset-0 z-0 bg-grid-pattern bg-grid-size" />
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -110,7 +98,7 @@ const Login = () => {
             >
               <Card className="rounded-2xl shadow-xl border border-border bg-background/80 backdrop-blur-md">
                 <CardHeader>
-                  <CardTitle className="text-center text-white">Login</CardTitle>
+                  <CardTitle className="text-center text-white font-mono">LOGIN</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <motion.div
@@ -123,6 +111,7 @@ const Login = () => {
                       Username
                     </Label>
                     <Input
+                      className="focus:border-white/20"
                       id="username"
                       type="text"
                       value={username}
@@ -144,6 +133,7 @@ const Login = () => {
                       Password
                     </Label>
                     <Input
+                      className="focus:border-white/20"
                       id="password"
                       type="password"
                       value={password}
@@ -171,8 +161,7 @@ const Login = () => {
                 </CardContent>
               </Card>
             </motion.div>
-          </section>
-        </Section>
+          </div>
       </div>
     </div>
   );

@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: sans-serif, monospace;
+}
+
+.font-mono {
+  font-family: JetBrains Mono, monospace;
 }
 
 @layer utilities {
@@ -15,6 +19,7 @@ body {
 @layer base {
   :root {
     --background: 0 0% 100%;
+    --background-subtle: 240 3% 8%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -48,26 +53,30 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 240 3% 6%;
+    --background-subtle: 240 3% 8%;
     --foreground: 0 0% 98%;
+    --muted: 0 0% 4%;
+    --muted-foreground: 240 5% 64.9%;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
     --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent-foreground: 240 4.8% 95.9%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --warning: 35 100% 52%;
+    --warning-foreground: 0 0% 9%;
+    --ring: 240 3.7% 15.9%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -80,8 +89,18 @@ body {
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 240 4.9% 83.9%;
+    --quaint-background: 214 56% 20%;
+    --quaint-background-subtle: 0 0% 100% / 0.6;
+    --quaint-foreground-subtle: 46 79% 87%;
+    --starter-deepinfra: 234 35% 21%;
+    --starter-fal: 190 29% 19%;
+    --starter-groq: 7 20% 16%;
+    --starter-neon: 182 41% 13%;
+    --starter-supabase: 153 24% 18%;
+    --starter-upstash: 161 26% 19%;
   }
+
   .text-shadow-white {
     text-shadow: 0px 0px 35px #ffffff81;
   }

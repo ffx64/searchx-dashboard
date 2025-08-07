@@ -1,52 +1,67 @@
 import { CombolistDataType, CombolistMetadataType } from "@/types/combolist.type"
 import { toast } from "sonner"
-import api from "@/services/api.service"
+import api from "@/lib/api"
 
-const fetch = async <T,>(url: string): Promise<T> => {
-  const token = sessionStorage.getItem("token")
-  const { data } = await api.get<T>(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-  return data
-}
+export const SearchOptions = {
+  X: "search",
+  username: "username",
+  email: "email",
+  password: "password",
+  domain: "domain",
+} as const
 
-export const searchX = async (
-  search: string,
-  searchType: keyof typeof searchOptions
-): Promise<CombolistDataType[]> => {
-  if (!search.trim()) return []
+export class CombolistService {
+    private url = "http://localhost:8080/api/v1/combolist"
 
-  try {
-    const url = `/combolist/${searchOptions[searchType]}/${encodeURIComponent(search)}`
-    const data = await fetch<CombolistDataType[]>(url)
+    async getAllMetadata(id: string): Promise<CombolistMetadataType[]> {
+        try {
+            const token = sessionStorage.getItem("token")
+            
+            const response = await api.get<CombolistMetadataType[]>(`combolist/metadata/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                }
+            )
 
-    if (!Array.isArray(data)) {
-      toast.error("No data found for the performed search.")
-      return []
+            if (!Array.isArray(response.data) || response.data.length === 0) {
+                toast.error("No data found for the performed search.")
+                return []
+            }
+
+            return response.data
+        } catch (error) {
+            console.error("Error fetching metadata:", error)
+            toast.error("Failed to load metadata.")
+            return []
+        }
     }
 
-    return data
-  } catch (err) {
-    console.error("Error searching combolist", err)
-    toast.error("Error performing the search. Please try again.")
-    return []
-  }
-}
+    async getData(search: string, option: keyof typeof SearchOptions): Promise<CombolistDataType[]> {
+        try {
+            const token = sessionStorage.getItem("token")
 
-export const getMetadataX = async (metadataId: string): Promise<CombolistMetadataType | null> => {
-  try {
-    const data = await fetch<CombolistMetadataType>(`/combolist/metadata/${metadataId}`)
-    return data
-  } catch (err) {
-    toast.error("Error loading metadata.")
-    return null
-  }
+            const response = await api.get<CombolistDataType[]>(`${this.url}/data/${SearchOptions[option]}/${encodeURIComponent(search)}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    withCredentials: true,
+                }
+            )
+        
+            if (!Array.isArray(response.data) || response.data.length === 0) {
+                toast.error("No data found for the performed search.")
+                return []
+            }
+        
+            return response.data
+        } catch (error) {
+            console.error("Error fetching data:", error)
+            toast.error("Failed to load data.")
+            return []
+        }
+    }
 }
-
-export const searchOptions = {
-  X: "data/search",
-  username: "data/username",
-  email: "data/email",
-  password: "data/password",
-  domain: "data/domain",
-} as const

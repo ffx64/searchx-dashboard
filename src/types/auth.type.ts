@@ -1,9 +1,9 @@
-export type LoginResponseType = {
+export type AuthResponseType = {
     access_token: string;
     refresh_token: string;
 }
 
-export type LoginRequestType = {
+export type AuthRequestType = {
     username: string;
     password: string;
 }
